@@ -15,6 +15,7 @@
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "react": "^16.13.1",
+    "antd": "^4.2.5",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
@@ -30,7 +31,6 @@
     "@storybook/addons": "^5.3.19",
     "@storybook/react": "^5.3.19",
     "@umijs/fabric": "^2.0.8",
-    "antd": "^4.2.5",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "css-loader": "^3.5.3",
