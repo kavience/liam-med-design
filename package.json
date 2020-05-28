@@ -1,17 +1,16 @@
 {
-  "name": "myfile",
-  "version": "1.0.0",
-  "description": "",
-  "main": "lib/index.js",
+  "name": "lian-med-design",
+  "version": "0.0.1-alpha",
+  "description": "基于 antd 的组件库",
+  "main": "lib/components/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:types": "tsc --emitDeclarationOnly",
     "build": "babel src --out-dir lib --extensions \".ts,.tsx\" --copy-files"
   },
   "keywords": [],
-  "author": "",
+  "author": "lian-med",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
