@@ -1,3 +1,7 @@
-import { Button } from "antd";
+import React from 'react';
+import { Button } from 'antd';
+import { ButtonProps } from 'antd/lib/button';
 
-export default Button;
+export default (props: ButtonProps) => {
+  return <Button {...props} />;
+};
