@@ -1,2 +1,2 @@
-import { Row } from "antd";
-export default Row;
+import { Space } from "antd";
+export default Space;

@@ -1,2 +1,2 @@
-import { Row } from "antd";
-export default Row;
+import { Spin } from "antd";
+export default Spin;

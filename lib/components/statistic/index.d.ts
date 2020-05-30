@@ -1,2 +1,2 @@
-import { Row } from "antd";
-export default Row;
+import { Statistic } from "antd";
+export default Statistic;

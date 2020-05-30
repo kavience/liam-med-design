@@ -5,6 +5,7 @@
   "main": "lib/components/index.js",
   "scripts": {
     "storybook": "start-storybook -p 6006",
+    "build": "yarn build-storybook & yarn build-lib",
     "build-storybook": "build-storybook",
     "build-types": "tsc --emitDeclarationOnly",
     "build-tsx": "babel src --out-dir lib --extensions \".ts,.tsx\" --copy-files && yarn build-types",
