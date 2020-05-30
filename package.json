@@ -7,15 +7,17 @@
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "build:types": "tsc --emitDeclarationOnly",
-    "build": "babel src --out-dir lib --extensions \".ts,.tsx\" --copy-files"
+    "build-tsx": "tsc && babel src --out-dir lib --extensions \".ts,.tsx\" --copy-files",
+    "build-less": "BABEL_ENV=production NODE_ENV=production webpack",
+    "build-lib": "rm -rf ./lib && yarn build-tsx && yarn build-less"
   },
   "keywords": [],
   "author": "lian-med",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
-    "react": "^16.13.1",
     "antd": "^4.2.5",
+    "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
@@ -33,12 +35,18 @@
     "@umijs/fabric": "^2.0.8",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
+    "copy-webpack-plugin": "^5.0.4",
     "css-loader": "^3.5.3",
     "file-loader": "^6.0.0",
+    "img-loader": "^3.0.1",
+    "json-loader": "^0.5.7",
     "less-loader": "^6.1.0",
+    "mini-css-extract-plugin": "^0.8.0",
     "react-docgen-typescript-loader": "^3.7.2",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.5",
-    "typescript": "^3.9.3"
+    "typescript": "^3.9.3",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11"
   }
 }
