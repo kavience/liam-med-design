@@ -1,3 +1,3 @@
-import { Row } from "antd";
+import { Slider } from "antd";
 
-export default Row;
+export default Slider;

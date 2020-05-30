@@ -1,3 +1,3 @@
-import { Row } from "antd";
+import { Skeleton } from "antd";
 
-export default Row;
+export default Skeleton;
