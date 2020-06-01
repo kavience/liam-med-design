@@ -24128,6 +24128,9 @@ div.ant-typography-edit-content.ant-typography-rtl {
 .ant-upload-list-rtl.ant-upload-list-picture-card .ant-upload-list-item-info {
   padding: 0;
 }
+.input-with-label_input {
+  width: auto !important;
+}
 
 
 /*# sourceMappingURL=index.css.map*/

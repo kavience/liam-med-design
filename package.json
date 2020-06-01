@@ -1,6 +1,6 @@
 {
   "name": "lian-med-design",
-  "version": "0.0.1-beta1",
+  "version": "1.0.0",
   "description": "基于 antd 的组件库",
   "main": "lib/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "yarn build-storybook & yarn build-lib",
     "build-storybook": "build-storybook",
     "build-types": "tsc --emitDeclarationOnly",
-    "build-tsx": "babel src/components --out-dir lib --extensions \".ts,.tsx\" --copy-files && yarn build-types",
+    "build-tsx": "babel src/components --out-dir lib --extensions \".ts,.tsx\" --ignore \"./src/**/*.stories.tsx\" --copy-files && yarn build-types",
     "build-less": "BABEL_ENV=production NODE_ENV=production webpack",
     "build-lib": "rm -rf ./lib && yarn build-less && yarn build-tsx"
   },
@@ -17,7 +17,11 @@
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
+    "@types/classnames": "^2.2.10",
+    "@types/lodash": "^4.14.154",
     "antd": "^4.2.5",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.15",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
@@ -31,9 +35,11 @@
     "@storybook/addon-actions": "^5.3.19",
     "@storybook/addon-info": "^5.3.19",
     "@storybook/addon-links": "^5.3.19",
+    "@storybook/addon-storysource": "^5.3.19",
     "@storybook/addons": "^5.3.19",
     "@storybook/react": "^5.3.19",
     "@umijs/fabric": "^2.0.8",
+    "add": "^2.0.6",
     "babel-loader": "^8.1.0",
     "babel-preset-react-app": "^9.1.2",
     "copy-webpack-plugin": "^5.0.4",
@@ -48,6 +54,7 @@
     "ts-loader": "^7.0.5",
     "typescript": "^3.9.3",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "yarn": "^1.22.4"
   }
 }

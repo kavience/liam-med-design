@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import './index.less';
 
 interface IProps {
@@ -8,20 +9,23 @@ interface IProps {
 
 export class DemoContainer extends React.Component<IProps> {
   render() {
-    return <div className="demo-container">{this.props.children}</div>;
+    const { className } = this.props;
+    return <div className={classnames('demo-container', className)}>{this.props.children}</div>;
   }
 }
 
 export class DemoPanelContainer extends React.Component<IProps> {
   render() {
-    const { moreHref } = this.props;
+    const { className, moreHref } = this.props;
 
     return (
-      <div className="demo-panel-container">
+      <div className={classnames('demo-panel-container', className)}>
         {this.props.children}
-        <a className="demo-panel-container-more" href={moreHref}>
-          查看更多
-        </a>
+        {moreHref && (
+          <a className="demo-panel-container-more" href={moreHref}>
+            查看更多
+          </a>
+        )}
       </div>
     );
   }

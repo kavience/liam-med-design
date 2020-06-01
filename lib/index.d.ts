@@ -1,4 +1,4 @@
-import './index.css';
+import './index.less';
 export { default as Affix } from './affix';
 export { default as Anchor } from './anchor';
 export { default as AutoComplete } from './auto-complete';
@@ -62,4 +62,4 @@ export { default as Timeline } from './timeline';
 export { default as Tooltip } from './tooltip';
 export { default as Typography } from './typography';
 export { default as Upload } from './upload';
-export * from './icon';
+export { default as InputWithLabel } from './input-with-label';

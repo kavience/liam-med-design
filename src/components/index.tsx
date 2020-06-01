@@ -140,4 +140,7 @@ export { default as Typography } from './typography';
 
 export { default as Upload } from './upload';
 
-export * from './icon';
+// icon need to import from lian-med-design/icons
+// export { default as Icon } from './icon';
+
+export { default as InputWithLabel } from './input-with-label';

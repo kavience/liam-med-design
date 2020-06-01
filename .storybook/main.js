@@ -1,6 +1,9 @@
+const path = require('path');
+
 module.exports = {
   stories: ['../src/**/*.stories.[tj]sx'],
-  webpackFinal: async (config) => {
+  addons: ['@storybook/addon-storysource'],
+  webpackFinal: async config => {
     config.module.rules.push({
       test: /\.(ts|tsx)$/,
       loader: require.resolve('babel-loader'),
@@ -27,6 +30,11 @@ module.exports = {
     config.module.rules.push({
       test: /\.(gif|png|jpe?g|eot|woff|ttf|pdf)$/,
       loader: 'file-loader',
+    });
+    config.module.rules.push({
+      test: /\.stories\.[tj]sx?$/,
+      loaders: [require.resolve('@storybook/addon-storysource/loader')],
+      enforce: 'pre',
     });
     config.resolve.extensions.push('.ts', '.tsx', 'jsx');
     return config;
