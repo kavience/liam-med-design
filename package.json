@@ -1,8 +1,8 @@
 {
   "name": "lian-med-design",
-  "version": "0.0.1-beta",
+  "version": "0.0.1-beta1",
   "description": "基于 antd 的组件库",
-  "main": "lib/components/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "storybook": "start-storybook -p 6006",
     "build": "yarn build-storybook & yarn build-lib",
