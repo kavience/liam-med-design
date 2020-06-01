@@ -1,6 +1,6 @@
 {
   "name": "lian-med-design",
-  "version": "0.0.1-alpha",
+  "version": "0.0.1-alpha10",
   "description": "基于 antd 的组件库",
   "main": "lib/components/index.js",
   "scripts": {

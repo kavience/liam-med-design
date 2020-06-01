@@ -1,4 +1,4 @@
-import 'antd/dist/antd.less';
+import './index.less';
 export { default as Affix } from './affix';
 export { default as Anchor } from './anchor';
 export { default as AutoComplete } from './auto-complete';
