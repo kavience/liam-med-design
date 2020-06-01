@@ -1,6 +1,6 @@
 {
   "name": "lian-med-design",
-  "version": "0.0.1-alpha10",
+  "version": "0.0.1-beta",
   "description": "基于 antd 的组件库",
   "main": "lib/components/index.js",
   "scripts": {
@@ -8,9 +8,9 @@
     "build": "yarn build-storybook & yarn build-lib",
     "build-storybook": "build-storybook",
     "build-types": "tsc --emitDeclarationOnly",
-    "build-tsx": "babel src --out-dir lib --extensions \".ts,.tsx\" --copy-files && yarn build-types",
+    "build-tsx": "babel src/components --out-dir lib --extensions \".ts,.tsx\" --copy-files && yarn build-types",
     "build-less": "BABEL_ENV=production NODE_ENV=production webpack",
-    "build-lib": "rm -rf ./lib && yarn build-tsx && yarn build-less"
+    "build-lib": "rm -rf ./lib && yarn build-less && yarn build-tsx"
   },
   "keywords": [],
   "author": "lian-med",

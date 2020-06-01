@@ -1,4 +1,4 @@
-import './index.less';
+import './index.css';
 /* @remove-on-es-build-begin */
 // this file is not used if use https://github.com/ant-design/babel-plugin-import
 const ENV = process.env.NODE_ENV;
