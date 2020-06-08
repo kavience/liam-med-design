@@ -6,24 +6,26 @@
   "scripts": {
     "demo": "cross-env start-storybook -p 6006",
     "build": "cross-env yarn build-demo & yarn build-lib",
-    "build-demo": "cross-env build-demo",
+    "build-demo": "cross-env build-storybook",
     "build-types": "cross-env tsc --emitDeclarationOnly",
     "build-tsx": "cross-env babel src/components --out-dir lib --extensions \".ts,.tsx\" --ignore \"./src/**/*.stories.tsx\" --copy-files && yarn build-types",
     "build-less": "cross-env BABEL_ENV=production NODE_ENV=production webpack",
     "build-lib": "cross-env rm -rf ./lib && yarn build-less && yarn build-tsx"
   },
   "keywords": [],
-  "author": "lian-med",
+  "author": "lian-med-frontend",
   "license": "ISC",
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
     "@types/classnames": "^2.2.10",
     "@types/lodash": "^4.14.154",
     "antd": "^4.2.5",
+    "braft-editor": "^2.3.9",
     "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
     "lodash": "^4.17.15",
     "react": "^16.13.1",
+    "react-copy-to-clipboard": "^5.0.2",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {

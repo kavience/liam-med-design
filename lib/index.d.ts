@@ -63,3 +63,6 @@ export { default as Tooltip } from './tooltip';
 export { default as Typography } from './typography';
 export { default as Upload } from './upload';
 export { default as InputWithLabel } from './input-with-label';
+export { default as MultipleInputWithLabel } from './multiple-input-with-label';
+export { default as CheckBoxWithInput } from './checkbox-with-Input';
+export { default as Editor } from './editor';
