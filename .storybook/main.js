@@ -27,10 +27,10 @@ module.exports = {
         },
       ],
     });
-    config.module.rules.push({
-      test: /\.(gif|png|jpe?g|eot|woff|ttf|pdf)$/,
-      loader: 'file-loader',
-    });
+    // config.module.rules.push({
+    //   test: /\.(gif|png|jpe?g|eot|woff|ttf|pdf)$/,
+    //   loader: 'file-loader',
+    // });
     config.module.rules.push({
       test: /\.stories\.[tj]sx?$/,
       loaders: [require.resolve('@storybook/addon-storysource/loader')],

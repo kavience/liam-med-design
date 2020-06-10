@@ -1,0 +1,39 @@
+@import '../index.less';
+
+.question-step-three__panel {
+  width: 100%;
+  padding: 16px 8px;
+  &-top {
+    width: 100%;
+    display: flex;
+    flex-flow: row-reverse nowrap;
+  }
+  &-radio {
+    text-align: center;
+  }
+  &-mobile {
+    display: flex;
+    margin-top: 16px;
+    justify-content: center;
+    &-preview {
+      height: 640px;
+      width: 360px;
+      background-size: contain;
+      background-image: url('../assets/phone.jpg');
+      background-repeat: no-repeat;
+      background-position: center;
+      &_content {
+        height: 100%;
+        padding: 72px 44px 74px 45px;
+        .ant-form {
+          padding: 8px;
+          overflow-y: scroll;
+          .ant-form-item {
+            padding: 8px;
+            border: 1px solid @questionnaire-border-color;
+          }
+        }
+      }
+    }
+  }
+}

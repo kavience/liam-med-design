@@ -147,3 +147,4 @@ export { default as InputWithLabel } from './input-with-label';
 export { default as MultipleInputWithLabel } from './multiple-input-with-label';
 export { default as CheckBoxWithInput } from './checkbox-with-Input';
 export { default as Editor } from './editor';
+export { default as Questionnaire } from './questionnaire';
