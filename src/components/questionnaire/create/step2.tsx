@@ -319,10 +319,10 @@ export default class Step2 extends React.Component {
       !isUndefined(activeQuestion) && (
         <div className="question-step-two__panel-func">
           <div className="question-step-two__panel-func__title">题目{get(activeQuestion, 'index')}设置</div>
-          <div className="question-step-two__panel-func__item">
+          {/* <div className="question-step-two__panel-func__item">
             <span>此题必答</span>
             <Switch></Switch>
-          </div>
+          </div> */}
           <div className="question-step-two__panel-func__item">
             <span>题目关联</span>
             <Button
@@ -493,20 +493,7 @@ export default class Step2 extends React.Component {
                 >
                   上一步
                 </Button>
-                <Button
-                  className="question-step-two__panel-preview-bottom__btns-btn"
-                  onClick={() => {
-                    const { onSaveTemplate } = this.props;
-                    onSaveTemplate &&
-                      onSaveTemplate({
-                        questions,
-                        questionsTitle,
-                        questionsDescription,
-                      });
-                  }}
-                >
-                  保存为模板
-                </Button>
+
                 <Button
                   className="question-step-two__panel-preview-bottom__btns-btn"
                   onClick={() => {
@@ -523,6 +510,26 @@ export default class Step2 extends React.Component {
                   预览
                 </Button>
                 <Button
+                  type="primary"
+                  className="question-step-two__panel-preview-bottom__btns-btn"
+                  onClick={() => {
+                    const { onSaveTemplate, type, onCreateTemplate } = this.props;
+                    type === 'create'
+                      ? onCreateTemplate({
+                          questions,
+                          questionsTitle,
+                          questionsDescription,
+                        })
+                      : onSaveTemplate({
+                          questions,
+                          questionsTitle,
+                          questionsDescription,
+                        });
+                  }}
+                >
+                  保存问卷
+                </Button>
+                {/* <Button
                   onClick={() => {
                     const { onDeploy } = this.props;
                     onDeploy &&
@@ -536,7 +543,7 @@ export default class Step2 extends React.Component {
                   className="question-step-two__panel-preview-bottom__btns-btn"
                 >
                   发布
-                </Button>
+                </Button> */}
               </div>
             </div>
           </Col>

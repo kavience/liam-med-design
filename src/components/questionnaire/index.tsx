@@ -9,13 +9,15 @@ interface IQuestionnaire {
   templateList?: any[];
   onDeleteTemplate?: any;
   onSaveTemplate?: any;
-  onDeploy?: any;
+  onCreateTemplate?: any;
+  // onDeploy?: any;
 }
 
 export default (props: IQuestionnaire) => {
-  const { templateList, onDeploy, onSaveTemplate, onDeleteTemplate } = props;
+  const { templateList, onDeploy, onSaveTemplate, onCreateTemplate, onDeleteTemplate } = props;
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState({});
+  const [type, setType] = useState('create');
 
   const handleChangeStep = (target: number) => {
     setCurrent(target);
@@ -26,24 +28,26 @@ export default (props: IQuestionnaire) => {
     handleChangeStep(2);
   };
 
-  const handleInitQuestions = (questionnaire: any) => {
+  const handleInitQuestions = (type: 'create' | 'update', questionnaire: any) => {
     setData(questionnaire);
+    setType(type);
     handleChangeStep(1);
   };
 
   return (
     <div className="questionnaire">
       <Steps current={current} className="questionnaire-steps">
-        <Steps.Step title="推荐问卷类型" />
+        <Steps.Step title="选择问卷" />
         <Steps.Step title="编辑问卷" />
         <Steps.Step title="发布问卷" />
       </Steps>
       {current === 0 && (
         <Step1
-          onChangeStep={handleChangeStep}
           initQuestions={handleInitQuestions}
           templateList={templateList}
           onDeleteTemplate={onDeleteTemplate}
+          onCreate={onDeleteTemplate}
+          onUpdate={onDeleteTemplate}
         />
       )}
       {current === 1 && (
@@ -51,7 +55,9 @@ export default (props: IQuestionnaire) => {
           onChangeStep={handleChangeStep}
           onPreview={handlePreview}
           onSaveTemplate={onSaveTemplate}
-          onDeploy={onDeploy}
+          onCreateTemplate={onCreateTemplate}
+          // onDeploy={onDeploy}
+          type={type}
           data={data}
         />
       )}

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { List, Card, Button, Popconfirm } from 'antd';
-import { PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { List, Card, Button } from 'antd';
+import { PlusOutlined, DeleteOutlined, EditOutlined, CopyOutlined } from '@ant-design/icons';
 import { get } from 'lodash';
 import './step1.less';
 
@@ -11,21 +11,21 @@ export class Step1 extends Component {
 
   componentDidMount() {}
 
-  handleSelect = (item: any) => () => {
+  handleSelect = (type: 'create' | 'update', item: any) => {
     const { initQuestions } = this.props;
-    initQuestions && initQuestions(get(item, 'questionnaire'));
+    initQuestions && initQuestions(type, get(item, 'questionnaire'));
   };
 
   handleNewTemplate = () => {
     const { initQuestions } = this.props;
-    initQuestions && initQuestions({});
+    initQuestions && initQuestions('create', {});
   };
 
   render() {
     const { templateList, onDeleteTemplate } = this.props;
     return (
       <div className="follow-up-step1">
-        <h3 style={{ marginTop: 16, marginBottom: 16 }}>推荐模板</h3>
+        <h3 style={{ marginTop: 16, marginBottom: 16 }}>选择问卷</h3>
         <List
           rowKey="id"
           grid={{ gutter: 24, column: 5 }}
@@ -36,9 +36,18 @@ export class Step1 extends Component {
                 <Card
                   hoverable
                   bodyStyle={{ paddingBottom: 20 }}
-                  onClick={this.handleSelect(item)}
+                  onClick={() => {
+                    this.handleSelect('update', item);
+                  }}
                   actions={[
                     <EditOutlined key="edit" />,
+                    <CopyOutlined
+                      key="copy"
+                      onClick={e => {
+                        e.stopPropagation();
+                        this.handleSelect('create', item);
+                      }}
+                    />,
                     <DeleteOutlined
                       key="delete"
                       onClick={e => {
@@ -55,7 +64,7 @@ export class Step1 extends Component {
               <List.Item>
                 <Button type="dashed" className="follow-up-new-button" onClick={this.handleNewTemplate}>
                   <PlusOutlined />
-                  新建模板
+                  新建问卷
                 </Button>
               </List.Item>
             )
