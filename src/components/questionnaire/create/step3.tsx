@@ -31,10 +31,10 @@ export default (props: any) => {
     setDevice(get(e, 'target.value'));
   };
 
-  const handleSubmit = () => {
-    onChangeStep && onChangeStep(0);
-    onDeploy && onDeploy(data);
-  };
+  // const handleSubmit = () => {
+  //   onChangeStep && onChangeStep(0);
+  //   onDeploy && onDeploy(data);
+  // };
 
   const handleMockSubmit = () => {
     notification.error({
@@ -171,9 +171,9 @@ export default (props: any) => {
   return (
     <div className="question-step-three__panel">
       <div className="question-step-three__panel-top">
-        <Button type="primary" onClick={handleSubmit}>
+        {/* <Button type="primary" onClick={handleSubmit}>
           发布
-        </Button>
+        </Button> */}
         <Button
           style={{ marginRight: 8 }}
           onClick={() => {

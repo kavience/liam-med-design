@@ -39,29 +39,31 @@ export default (props: IQuestionnaire) => {
       <Steps current={current} className="questionnaire-steps">
         <Steps.Step title="选择问卷" />
         <Steps.Step title="编辑问卷" />
-        <Steps.Step title="发布问卷" />
+        <Steps.Step title="预览问卷" />
       </Steps>
-      {current === 0 && (
-        <Step1
-          initQuestions={handleInitQuestions}
-          templateList={templateList}
-          onDeleteTemplate={onDeleteTemplate}
-          onCreate={onDeleteTemplate}
-          onUpdate={onDeleteTemplate}
-        />
-      )}
-      {current === 1 && (
-        <Step2
-          onChangeStep={handleChangeStep}
-          onPreview={handlePreview}
-          onSaveTemplate={onSaveTemplate}
-          onCreateTemplate={onCreateTemplate}
-          // onDeploy={onDeploy}
-          type={type}
-          data={data}
-        />
-      )}
-      {current === 2 && <Step3 onChangeStep={handleChangeStep} onDeploy={onDeploy} data={data} />}
+      <div className="questionnaire-steps-content">
+        {current === 0 && (
+          <Step1
+            initQuestions={handleInitQuestions}
+            templateList={templateList}
+            onDeleteTemplate={onDeleteTemplate}
+            onCreate={onDeleteTemplate}
+            onUpdate={onDeleteTemplate}
+          />
+        )}
+        {current === 1 && (
+          <Step2
+            onChangeStep={handleChangeStep}
+            onPreview={handlePreview}
+            onSaveTemplate={onSaveTemplate}
+            onCreateTemplate={onCreateTemplate}
+            // onDeploy={onDeploy}
+            type={type}
+            data={data}
+          />
+        )}
+        {current === 2 && <Step3 onChangeStep={handleChangeStep} onDeploy={onDeploy} data={data} />}
+      </div>
     </div>
   );
 };
