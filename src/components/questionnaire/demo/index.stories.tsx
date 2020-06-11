@@ -201,14 +201,17 @@ storiesOf('其它', module).add('questionnaire 问卷调查', () => (
         templateList={mockTemplateList}
         onDeleteTemplate={questionnaire => {
           // TODO: delete template
+          console.log(questionnaire);
           message.success('删除模板成功');
         }}
         onSaveTemplate={questionnaire => {
           // TODO: save template
+          console.log(questionnaire);
           message.success('保存模板成功');
         }}
         onDeploy={questionnaire => {
           // TODO: do deploy
+          console.log(questionnaire);
           message.success('问卷发布成功');
         }}
       />

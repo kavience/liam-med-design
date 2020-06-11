@@ -497,7 +497,12 @@ export default class Step2 extends React.Component {
                   className="question-step-two__panel-preview-bottom__btns-btn"
                   onClick={() => {
                     const { onSaveTemplate } = this.props;
-                    onSaveTemplate && onSaveTemplate();
+                    onSaveTemplate &&
+                      onSaveTemplate({
+                        questions,
+                        questionsTitle,
+                        questionsDescription,
+                      });
                   }}
                 >
                   保存为模板
@@ -520,7 +525,12 @@ export default class Step2 extends React.Component {
                 <Button
                   onClick={() => {
                     const { onDeploy } = this.props;
-                    onDeploy && onDeploy();
+                    onDeploy &&
+                      onDeploy({
+                        questions,
+                        questionsTitle,
+                        questionsDescription,
+                      });
                   }}
                   type="primary"
                   className="question-step-two__panel-preview-bottom__btns-btn"

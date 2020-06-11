@@ -7,7 +7,7 @@ import './step3.less';
 export default (props: any) => {
   const [device, setDevice] = useState('mobile');
   const [globalLogic, setGlobalLogic] = useState([]);
-  const { data, onChangeStep } = props;
+  const { data, onChangeStep, onDeploy } = props;
   const { questions, questionsTitle, questionsDescription } = data;
   const [form] = Form.useForm();
   const [refresh, setRefresh] = useState(false);
@@ -33,7 +33,7 @@ export default (props: any) => {
 
   const handleSubmit = () => {
     onChangeStep && onChangeStep(0);
-    message.success('发布问卷成功');
+    onDeploy && onDeploy(data);
   };
 
   const handleMockSubmit = () => {

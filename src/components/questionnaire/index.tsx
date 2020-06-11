@@ -43,25 +43,19 @@ export default (props: IQuestionnaire) => {
           onChangeStep={handleChangeStep}
           initQuestions={handleInitQuestions}
           templateList={templateList}
-          onDeleteTemplate={() => {
-            onDeleteTemplate && onDeleteTemplate();
-          }}
+          onDeleteTemplate={onDeleteTemplate}
         />
       )}
       {current === 1 && (
         <Step2
           onChangeStep={handleChangeStep}
           onPreview={handlePreview}
-          onSaveTemplate={() => {
-            onSaveTemplate && onSaveTemplate();
-          }}
-          onDeploy={() => {
-            onDeploy && onDeploy();
-          }}
+          onSaveTemplate={onSaveTemplate}
+          onDeploy={onDeploy}
           data={data}
         />
       )}
-      {current === 2 && <Step3 onChangeStep={handleChangeStep} onDeploy={handleDeploy} data={data} />}
+      {current === 2 && <Step3 onChangeStep={handleChangeStep} onDeploy={onDeploy} data={data} />}
     </div>
   );
 };
