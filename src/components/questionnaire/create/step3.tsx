@@ -1,16 +1,30 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { Button, Radio, message, Form, Input, Rate, Select, Checkbox } from 'antd';
-import { get, map } from 'lodash';
-import { CheckOutlined, ArrowLeftOutlined, DesktopOutlined, MobileOutlined } from '@ant-design/icons';
+import { Button, Radio, message, Form, Input, Rate, Select, Checkbox, notification } from 'antd';
+import { get, map, indexOf, isArray, keys } from 'lodash';
+import { DesktopOutlined, MobileOutlined } from '@ant-design/icons';
 import './step3.less';
 
-export default props => {
+export default (props: any) => {
   const [device, setDevice] = useState('mobile');
-  const { onChangeStep } = props;
+  const [globalLogic, setGlobalLogic] = useState([]);
+  const { data, onChangeStep } = props;
+  const { questions, questionsTitle, questionsDescription } = data;
   const [form] = Form.useForm();
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
-    console.log(props.questions);
+    refresh && setTimeout(() => setRefresh(false));
+  }, [refresh]);
+
+  useEffect(() => {
+    const newGlobalLogic: any = [...globalLogic];
+    map(questions, (question, index) => {
+      const { logic } = question;
+      if (logic) {
+        newGlobalLogic.push({ bindIndex: get(logic, 'bind'), index });
+      }
+    });
+    setGlobalLogic(newGlobalLogic);
   }, []);
 
   const handleChange = e => {
@@ -22,20 +36,52 @@ export default props => {
     message.success('发布问卷成功');
   };
 
-  const handleRadioChange = () => {
-    console.log(form.getFieldsValue());
+  const handleMockSubmit = () => {
+    notification.error({
+      message: '不可提交',
+      description: '此为预览模式，无法提交',
+    });
+  };
+
+  const handleValuesChange = (values, allValues) => {
+    const changedKey = get(keys(values), 0);
+    map(globalLogic, ({ bindIndex, index }) => {
+      if (changedKey == bindIndex) {
+        form.setFieldsValue({
+          [index]: undefined,
+        });
+      }
+    });
+    setRefresh(true);
   };
 
   const renderFormItem = (question: any, index: any) => {
     const { options, type, title, logic } = question;
+    let itemStyle = {};
     let Component: any = <Fragment />;
+    const bindIndex = get(logic, 'bind');
+    const bindIndexSelectOption = get(logic, 'selectOption');
+    const formItemValue = form.getFieldValue(bindIndex);
     if (logic) {
-      return Component;
+      itemStyle = {
+        display: 'none',
+      };
+      if (isArray(formItemValue)) {
+        map(formItemValue, itemOption => {
+          if (indexOf(bindIndexSelectOption, itemOption) > -1) {
+            itemStyle = {};
+          }
+        });
+      } else {
+        if (indexOf(bindIndexSelectOption, formItemValue) > -1) {
+          itemStyle = {};
+        }
+      }
     }
     switch (type) {
       case 'radio':
         Component = (
-          <Radio.Group onChange={handleRadioChange}>
+          <Radio.Group>
             {map(options, (option, key) => {
               return (
                 <Radio style={{ display: 'block' }} key={key} value={key}>
@@ -76,14 +122,13 @@ export default props => {
         Component = <Rate />;
         break;
       case 'descption':
-        Component = <Input.TextArea disabled />;
         break;
       default:
         Component = <Input />;
         break;
     }
     return (
-      <Form.Item name={index} label={title}>
+      <Form.Item style={itemStyle} name={index} label={`${index + 1}.${title}`}>
         {Component}
       </Form.Item>
     );
@@ -91,10 +136,34 @@ export default props => {
 
   const renderMobileShow = () => {
     return (
-      <Form layout="vertical">
-        {map(props.questions, (question, index) => {
+      <Form form={form} layout="vertical" onValuesChange={handleValuesChange}>
+        <div className="questions-title">{questionsTitle}</div>
+        <div className="questions-desc">{questionsDescription}</div>
+        {map(questions, (question, index) => {
           return <Fragment key={index}>{renderFormItem(question, index)}</Fragment>;
         })}
+        <Form.Item>
+          <Button type="primary" onClick={handleMockSubmit}>
+            提交
+          </Button>
+        </Form.Item>
+      </Form>
+    );
+  };
+
+  const renderComputeShow = () => {
+    return (
+      <Form form={form} layout="vertical" onValuesChange={handleValuesChange}>
+        <div className="questions-title">{questionsTitle}</div>
+        <div className="questions-desc">{questionsDescription}</div>
+        {map(questions, (question, index) => {
+          return <Fragment key={index}>{renderFormItem(question, index)}</Fragment>;
+        })}
+        <Form.Item>
+          <Button type="primary" onClick={handleMockSubmit}>
+            提交
+          </Button>
+        </Form.Item>
       </Form>
     );
   };
@@ -102,19 +171,16 @@ export default props => {
   return (
     <div className="question-step-three__panel">
       <div className="question-step-three__panel-top">
-        <Button size="small" type="primary" onClick={handleSubmit}>
-          <CheckOutlined />
+        <Button type="primary" onClick={handleSubmit}>
           发布
         </Button>
         <Button
-          size="small"
           style={{ marginRight: 8 }}
           onClick={() => {
             onChangeStep && onChangeStep(1);
           }}
         >
-          <ArrowLeftOutlined />
-          返回
+          上一步
         </Button>
       </div>
       <div className="question-step-three__panel-radio">
@@ -137,7 +203,7 @@ export default props => {
           </div>
         </div>
       )}
-      {device === 'compute' && <div className="question-step-three__panel-compute">电脑端</div>}
+      {device === 'compute' && <div className="question-step-three__panel-compute">{renderComputeShow()}</div>}
     </div>
   );
 };

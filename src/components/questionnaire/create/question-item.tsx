@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { Row, Col, Button, Input, Switch, InputNumber } from 'antd';
-import { isEmpty, map, get, indexOf, last, keys, isNil, join } from 'lodash';
+import { isEmpty, map, get, indexOf, isNil, join } from 'lodash';
 import {
   StarOutlined,
   BorderOutlined,
@@ -21,6 +21,8 @@ interface IProps {
   onQuestionItemOptionsDelete: any;
   onQuestionItemOptionsAdd: any;
   onQuestionClick: any;
+  onQuestionItemOptionEdit: any;
+  onQuestionItemEdit: any;
 }
 
 let lastClientY = 0;
@@ -35,6 +37,8 @@ export default (props: IProps) => {
     onQuestionItemOptionsDelete,
     onQuestionItemDelete,
     onQuestionItemOptionsAdd,
+    onQuestionItemEdit,
+    onQuestionItemOptionEdit,
   } = props;
 
   const ref = useRef();
@@ -75,6 +79,9 @@ export default (props: IProps) => {
               className="question-step-two__panel-preview-middle__question-options-input"
               addonBefore={<CheckCircleOutlined />}
               value={get(option, 'label')}
+              onChange={e => {
+                onQuestionItemOptionEdit(index, optionIndex, get(e, 'target.value'));
+              }}
               size="small"
             />
             <MinusCircleOutlined
@@ -97,6 +104,9 @@ export default (props: IProps) => {
               addonBefore={<BorderOutlined />}
               value={get(option, 'label')}
               size="small"
+              onChange={e => {
+                onQuestionItemOptionEdit(index, optionIndex, get(e, 'target.value'));
+              }}
             />
             <MinusCircleOutlined
               onClick={(e: React.MouseEvent) => {
@@ -118,6 +128,9 @@ export default (props: IProps) => {
               addonBefore={<CaretDownOutlined />}
               value={get(option, 'label')}
               size="small"
+              onChange={e => {
+                onQuestionItemOptionEdit(index, optionIndex, get(e, 'target.value'));
+              }}
             />
             <MinusCircleOutlined
               onClick={(e: React.MouseEvent) => {
@@ -205,6 +218,9 @@ export default (props: IProps) => {
           className="question-step-two__panel-preview-middle__question-options-input"
           value={get(question, 'title')}
           size="small"
+          onChange={e => {
+            onQuestionItemEdit(index, get(e, 'target.value'));
+          }}
         />
         {renderQuestionInput()}
       </div>

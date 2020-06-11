@@ -1,73 +1,8 @@
 import React, { Fragment } from 'react';
-import { Row, Col, Button, Input, Switch, InputNumber, Modal, Select, Checkbox, notification } from 'antd';
-import { StarOutlined, BorderOutlined, CaretDownOutlined } from '@ant-design/icons';
-import {
-  isEmpty,
-  map,
-  get,
-  indexOf,
-  last,
-  keys,
-  toArray,
-  concat,
-  keyBy,
-  isUndefined,
-  filter,
-  set,
-  cloneDeep,
-} from 'lodash';
+import { Row, Col, Button, Input, Switch, Modal, Select, Checkbox, notification } from 'antd';
+import { isEmpty, map, get, indexOf, last, keys, concat, keyBy, isUndefined, filter, set, cloneDeep } from 'lodash';
 import QuestionItem from './question-item';
 import './step2.less';
-
-const mockQuestions = [
-  {
-    type: 'radio',
-    title: '你喜欢水果还是蔬菜',
-    options: [
-      {
-        label: '水果',
-      },
-      {
-        label: '蔬菜',
-      },
-    ],
-  },
-  {
-    type: 'multiple',
-    title: '你喜欢什么水果',
-    logic: {
-      bind: 0,
-      selectOption: [0],
-    },
-    options: [
-      {
-        label: '苹果',
-      },
-      {
-        label: '菠萝',
-      },
-      {
-        label: '葡萄',
-      },
-    ],
-  },
-  {
-    type: 'radio',
-    title: '你会吃水果皮吗',
-    logic: {
-      bind: 1,
-      selectOption: [0, 1, 2],
-    },
-    options: [
-      {
-        label: '会',
-      },
-      {
-        label: '不会',
-      },
-    ],
-  },
-];
 
 export const chooseArray = [
   {
@@ -124,15 +59,21 @@ const btns = [
 ];
 
 export default class Step2 extends React.Component {
-  state = {
-    questions: mockQuestions, // 问题集合
-    dragItemType: undefined, // 当前拖动的问题类型
-    newQuestionIndex: undefined,
-    activeQuestion: undefined,
-    relationVisible: false,
-    relationSelect: 0,
-    relationBindOption: [],
-  };
+  constructor(props: any) {
+    super(props);
+    const { data } = props;
+    this.state = {
+      questionsTitle: get(data, 'questionsTitle') || '',
+      questionsDescription: get(data, 'questionsDescription') || '',
+      questions: get(data, 'questions') || [],
+      dragItemType: undefined,
+      newQuestionIndex: undefined,
+      activeQuestion: undefined,
+      relationVisible: false,
+      relationSelect: 0,
+      relationBindOption: [],
+    };
+  }
 
   questionItemRefs = {};
 
@@ -225,9 +166,6 @@ export default class Step2 extends React.Component {
     return question;
   };
 
-  /**
-   * 点击按钮添加题目
-   */
   handleBtnClick = type => () => {
     const { questions } = this.state;
     const lastItemRef = get(this.questionItemRefs, last(keys(this.questionItemRefs)));
@@ -245,18 +183,18 @@ export default class Step2 extends React.Component {
 
   handleDragEnd = () => {
     const { questions, dragItemType } = this.state;
-    const newQuestions = toArray(questions);
-    newQuestions.splice(this.index, 0, get(toArray(this.generateQuestionByType(dragItemType)), '0'));
-    this.setState({
-      questions: keyBy(newQuestions, 'id'),
+    const newQuestions = cloneDeep(questions);
+    newQuestions.splice(this.index, 0, this.generateQuestionByType(dragItemType));
+    map(newQuestions, (question, questionIndex: number) => {
+      if (!isUndefined(get(question, 'logic.bind')) && questionIndex > this.index) {
+        if (get(question, 'logic.bind') > this.index - 1) {
+          set(question, 'logic.bind', get(question, 'logic.bind') + 1);
+        }
+      }
     });
-  };
-
-  handlePreview = () => {
-    const { onChangeStep, onPreview } = this.props;
-    const { questions } = this.state;
-    onPreview && onPreview(questions);
-    onChangeStep && onChangeStep(2);
+    this.setState({
+      questions: newQuestions,
+    });
   };
 
   handleQuestionClick = (activeQuestion: any) => {
@@ -267,49 +205,6 @@ export default class Step2 extends React.Component {
       relationSelect: Number(get(logic, 'bind')) + 1 || [],
       relationBindOption: get(logic, 'selectOption') || [],
     });
-  };
-
-  renderQuestionInput = question => {
-    if (indexOf(['radio'], get(question, 'type')) > -1) {
-      return map(get(question, 'options'), (option, index) => {
-        return (
-          <Input
-            key={index}
-            addonBefore={<CaretDownOutlined />}
-            className=""
-            value={get(option, 'label')}
-            size="small"
-          />
-        );
-      });
-    }
-    if (indexOf(['multiple'], get(question, 'type')) > -1) {
-      return map(get(question, 'options'), (option, index) => {
-        return <Input key={index} addonBefore={<BorderOutlined />} value={get(option, 'label')} size="small" />;
-      });
-    }
-    if (indexOf(['dropdown'], get(question, 'type')) > -1) {
-      return map(get(question, 'options'), (option, index) => {
-        return <Input key={index} addonBefore={<CaretDownOutlined />} value={get(option, 'label')} size="small" />;
-      });
-    }
-    if (indexOf(['completion'], get(question, 'type')) > -1) {
-      return <Input className="question-step-two__panel-preview-middle__question-input" size="small" />;
-    }
-    if (indexOf(['descption'], get(question, 'type')) > -1) {
-      return <Input className="question-step-two__panel-preview-middle__question-input" size="small" />;
-    }
-    if (indexOf(['star'], get(question, 'type')) > -1) {
-      return (
-        <div className="question-step-two__panel-preview-middle__question-input">
-          <StarOutlined />
-          <StarOutlined />
-          <StarOutlined />
-          <StarOutlined />
-          <StarOutlined />
-        </div>
-      );
-    }
   };
 
   renderQuestions = () => {
@@ -324,11 +219,25 @@ export default class Step2 extends React.Component {
           lastQuestion={lastQuestion}
           onChangeIndex={this.handleChangeIndex}
           onQuestionClick={this.handleQuestionClick}
+          onQuestionItemEdit={(index, text) => {
+            const newQuestions = cloneDeep(questions);
+            set(newQuestions, `${index - 1}.title`, text);
+            this.setState({
+              questions: newQuestions,
+            });
+          }}
+          onQuestionItemOptionEdit={(index, optionIndex, text) => {
+            const newQuestions = cloneDeep(questions);
+            set(newQuestions, `${index - 1}.options.${optionIndex}.label`, text);
+            this.setState({
+              questions: newQuestions,
+            });
+          }}
           onQuestionItemDelete={index => {
             const newQuestions = cloneDeep(questions);
             const logicBindIds: any = [];
             map(questions, question => {
-              get(question, 'logic.bind') && logicBindIds.push(get(question, 'logic.bind'));
+              !isUndefined(get(question, 'logic.bind')) && logicBindIds.push(get(question, 'logic.bind'));
             });
             if (indexOf(logicBindIds, index - 1) > -1) {
               notification.error({
@@ -338,6 +247,11 @@ export default class Step2 extends React.Component {
               return;
             }
             newQuestions.splice(index - 1, 1);
+            map(newQuestions, (question, questionIndex: number) => {
+              if (!isUndefined(get(question, 'logic.bind')) && questionIndex > index - 1) {
+                set(question, 'logic.bind', get(question, 'logic.bind') - 1);
+              }
+            });
             this.setState({
               questions: newQuestions,
             });
@@ -405,10 +319,10 @@ export default class Step2 extends React.Component {
       !isUndefined(activeQuestion) && (
         <div className="question-step-two__panel-func">
           <div className="question-step-two__panel-func__title">题目{get(activeQuestion, 'index')}设置</div>
-          {/* <div className="question-step-two__panel-func__item">
+          <div className="question-step-two__panel-func__item">
             <span>此题必答</span>
             <Switch></Switch>
-          </div> */}
+          </div>
           <div className="question-step-two__panel-func__item">
             <span>题目关联</span>
             <Button
@@ -422,14 +336,6 @@ export default class Step2 extends React.Component {
               设置
             </Button>
           </div>
-          {/* <div className="question-step-two__panel-func__item">
-            <span>选项一</span>
-            <InputNumber size="small" min={0} className="question-step-two__panel-func__item-btn" />
-          </div>
-          <div className="question-step-two__panel-func__item">
-            <span>选项二</span>
-            <InputNumber size="small" min={0} className="question-step-two__panel-func__item-btn" />
-          </div> */}
         </div>
       )
     );
@@ -437,6 +343,12 @@ export default class Step2 extends React.Component {
 
   handleSaveRelation = () => {
     const { relationBindOption, relationSelect, questions, activeQuestion } = this.state;
+    if (relationSelect < 1) {
+      this.setState({
+        relationVisible: false,
+      });
+      return;
+    }
     const logic = {
       bind: relationSelect - 1,
       selectOption: relationBindOption,
@@ -454,7 +366,7 @@ export default class Step2 extends React.Component {
     const questionBefore = questions.slice(0, Number(get(activeQuestion, 'index')) - 1);
     const selectOptions = filter(
       questionBefore,
-      question => indexOf(['radio', 'dropdown', 'multiple'], get(activeQuestion, 'type')) > -1,
+      question => indexOf(['radio', 'dropdown', 'multiple'], get(question, 'type')) > -1,
     );
     selectOptions.unshift({ title: '请选择关联的题目' } as any);
     const boxOptions = get(selectOptions, `${relationSelect}.options`);
@@ -527,7 +439,7 @@ export default class Step2 extends React.Component {
   };
 
   render() {
-    const { questions } = this.state;
+    const { relationVisible, questions, questionsTitle, questionsDescription } = this.state;
 
     return (
       <>
@@ -535,10 +447,26 @@ export default class Step2 extends React.Component {
           <Col span={4}>{this.renderBtns()}</Col>
           <Col span={12} offset={1} className="question-step-two__panel-preview">
             <div className="question-step-two__panel-preview-top">
-              <Input className="question-step-two__panel-preview-top__title" value="请填写问卷标题" />
               <Input
+                className="question-step-two__panel-preview-top__title"
+                value={questionsTitle}
+                placeholder="请输入标题"
+                onChange={e => {
+                  this.setState({
+                    questionsTitle: get(e, 'target.value'),
+                  });
+                }}
+              />
+              <Input.TextArea
                 className="question-step-two__panel-preview-top__desc"
-                value="感谢您能抽出几分钟参加本问卷，现在让我们开始吧"
+                value={questionsDescription}
+                rows={3}
+                placeholder="请输入描述"
+                onChange={e => {
+                  this.setState({
+                    questionsDescription: get(e, 'target.value'),
+                  });
+                }}
               />
             </div>
             <div className="question-step-two__panel-preview-middle">
@@ -556,24 +484,57 @@ export default class Step2 extends React.Component {
                 <Input.TextArea rows={5} defaultValue="感谢您的配合!" />
               </div>
               <div className="question-step-two__panel-preview-bottom__btns">
-                <Button size="small" type="primary" className="question-step-two__panel-preview-bottom__btns-btn">
-                  发布
+                <Button
+                  className="question-step-two__panel-preview-bottom__btns-btn"
+                  onClick={() => {
+                    const { onChangeStep } = this.props;
+                    onChangeStep && onChangeStep(0);
+                  }}
+                >
+                  上一步
                 </Button>
                 <Button
-                  size="small"
                   className="question-step-two__panel-preview-bottom__btns-btn"
-                  onClick={this.handlePreview}
+                  onClick={() => {
+                    const { onSaveTemplate } = this.props;
+                    onSaveTemplate && onSaveTemplate();
+                  }}
+                >
+                  保存为模板
+                </Button>
+                <Button
+                  className="question-step-two__panel-preview-bottom__btns-btn"
+                  onClick={() => {
+                    const { onPreview } = this.props;
+                    const { questions, questionsTitle, questionsDescription } = this.state;
+                    onPreview &&
+                      onPreview({
+                        questions,
+                        questionsTitle,
+                        questionsDescription,
+                      });
+                  }}
                 >
                   预览
+                </Button>
+                <Button
+                  onClick={() => {
+                    const { onDeploy } = this.props;
+                    onDeploy && onDeploy();
+                  }}
+                  type="primary"
+                  className="question-step-two__panel-preview-bottom__btns-btn"
+                >
+                  发布
                 </Button>
               </div>
             </div>
           </Col>
           <Col span={6} offset={1}>
-            {this.renderLogicEdit()}
+            {!isEmpty(questions) && this.renderLogicEdit()}
           </Col>
         </Row>
-        {this.renderModal()}
+        {relationVisible && this.renderModal()}
       </>
     );
   }
