@@ -95,4 +95,10 @@ export default [
   'icon-down',
   'icon-device',
   'icon-and',
+  'icon-workflow',
+  'icon-visit1',
+  'icon-questionnaire',
+  'icon-workflow_and',
+  'icon-workflow_list',
+  'icon-necessary',
 ];
