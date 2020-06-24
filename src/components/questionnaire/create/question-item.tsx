@@ -7,7 +7,7 @@ import {
   CaretDownOutlined,
   DeleteOutlined,
   CheckCircleOutlined,
-  MinusCircleOutlined,
+  CloseCircleOutlined,
 } from '@ant-design/icons';
 import './item.less';
 import { labelsArrayMapping } from './step2';
@@ -74,7 +74,7 @@ export default (props: IProps) => {
     if (indexOf(['radio'], type) > -1) {
       return map(options, (option, optionIndex) => {
         return (
-          <div className="question-step-two__panel-preview-middle__question-options">
+          <div key={optionIndex} className="question-step-two__panel-preview-middle__question-options">
             <Input
               className="question-step-two__panel-preview-middle__question-options-input"
               addonBefore={<CheckCircleOutlined />}
@@ -84,7 +84,7 @@ export default (props: IProps) => {
               }}
               size="small"
             />
-            <MinusCircleOutlined
+            <CloseCircleOutlined
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 onQuestionItemOptionsDelete(index, optionIndex);
@@ -98,7 +98,7 @@ export default (props: IProps) => {
     if (indexOf(['multiple'], type) > -1) {
       return map(options, (option, optionIndex) => {
         return (
-          <div className="question-step-two__panel-preview-middle__question-options">
+          <div key={optionIndex} className="question-step-two__panel-preview-middle__question-options">
             <Input
               className="question-step-two__panel-preview-middle__question-options-input"
               addonBefore={<BorderOutlined />}
@@ -108,7 +108,7 @@ export default (props: IProps) => {
                 onQuestionItemOptionEdit(index, optionIndex, get(e, 'target.value'));
               }}
             />
-            <MinusCircleOutlined
+            <CloseCircleOutlined
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 onQuestionItemOptionsDelete(index, optionIndex);
@@ -122,7 +122,7 @@ export default (props: IProps) => {
     if (indexOf(['dropdown'], type) > -1) {
       return map(options, (option, optionIndex) => {
         return (
-          <div className="question-step-two__panel-preview-middle__question-options">
+          <div key={optionIndex} className="question-step-two__panel-preview-middle__question-options">
             <Input
               className="question-step-two__panel-preview-middle__question-options-input"
               addonBefore={<CaretDownOutlined />}
@@ -132,7 +132,7 @@ export default (props: IProps) => {
                 onQuestionItemOptionEdit(index, optionIndex, get(e, 'target.value'));
               }}
             />
-            <MinusCircleOutlined
+            <CloseCircleOutlined
               onClick={(e: React.MouseEvent) => {
                 e.stopPropagation();
                 onQuestionItemOptionsDelete(index, optionIndex);

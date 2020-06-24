@@ -2,12 +2,13 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { Button, Radio, message, Form, Input, Rate, Select, Checkbox, notification } from 'antd';
 import { get, map, indexOf, isArray, keys } from 'lodash';
 import { DesktopOutlined, MobileOutlined } from '@ant-design/icons';
+import { CustomIcon } from '../../icon';
 import './step3.less';
 
 export default (props: any) => {
   const [device, setDevice] = useState('mobile');
   const [globalLogic, setGlobalLogic] = useState([]);
-  const { data, onChangeStep, onDeploy } = props;
+  const { data, onChangeStep, onSubmit } = props;
   const { questions, questionsTitle, questionsDescription } = data;
   const [form] = Form.useForm();
   const [refresh, setRefresh] = useState(false);
@@ -30,11 +31,6 @@ export default (props: any) => {
   const handleChange = e => {
     setDevice(get(e, 'target.value'));
   };
-
-  // const handleSubmit = () => {
-  //   onChangeStep && onChangeStep(0);
-  //   onDeploy && onDeploy(data);
-  // };
 
   const handleMockSubmit = () => {
     notification.error({
@@ -170,19 +166,6 @@ export default (props: any) => {
 
   return (
     <div className="question-step-three__panel">
-      <div className="question-step-three__panel-top">
-        {/* <Button type="primary" onClick={handleSubmit}>
-          发布
-        </Button> */}
-        <Button
-          style={{ marginRight: 8 }}
-          onClick={() => {
-            onChangeStep && onChangeStep(1);
-          }}
-        >
-          上一步
-        </Button>
-      </div>
       <div className="question-step-three__panel-radio">
         <Radio.Group onChange={handleChange} value={device}>
           <Radio.Button value="mobile">
@@ -195,7 +178,6 @@ export default (props: any) => {
           </Radio.Button>
         </Radio.Group>
       </div>
-
       {device === 'mobile' && (
         <div className="question-step-three__panel-mobile">
           <div className="question-step-three__panel-mobile-preview">
@@ -204,6 +186,27 @@ export default (props: any) => {
         </div>
       )}
       {device === 'compute' && <div className="question-step-three__panel-compute">{renderComputeShow()}</div>}
+      <div className="question-step-three__panel-bottom">
+        <Button
+          style={{ marginRight: 8 }}
+          icon={<CustomIcon type="icon-reset" />}
+          onClick={() => {
+            onChangeStep && onChangeStep(1);
+          }}
+        >
+          上一步
+        </Button>
+        <Button
+          type="primary"
+          icon={<CustomIcon type="icon-task" />}
+          style={{ marginRight: 8 }}
+          onClick={() => {
+            onSubmit && onSubmit();
+          }}
+        >
+          提交
+        </Button>
+      </div>
     </div>
   );
 };

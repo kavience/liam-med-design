@@ -10,7 +10,7 @@ if (
   typeof window !== 'undefined'
 ) {
   // eslint-disable-next-line no-console
-  console.warn('你正在全局引用' + '请使用 https://www.npmjs.com/package/babel-plugin-import 按需加载.');
+  // console.warn('你正在全局引用' + '请使用 https://www.npmjs.com/package/babel-plugin-import 按需加载.');
 }
 /* @remove-on-es-build-end */
 

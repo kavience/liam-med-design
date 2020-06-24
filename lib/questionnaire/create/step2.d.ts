@@ -4,22 +4,27 @@ import './step2.less';
 export declare const chooseArray: {
     title: string;
     value: string;
+    iconImg: any;
 }[];
 export declare const starArray: {
     title: string;
     value: string;
+    iconImg: any;
 }[];
 export declare const descArray: {
     title: string;
     value: string;
+    iconImg: any;
 }[];
 export declare const labelsArray: {
     title: string;
     value: string;
+    iconImg: any;
 }[];
 export declare const labelsArrayMapping: import("lodash").Dictionary<{
     title: string;
     value: string;
+    iconImg: any;
 }>;
 export default class Step2 extends React.Component {
     constructor(props: any);

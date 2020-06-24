@@ -1,25 +1,36 @@
 import React, { Fragment } from 'react';
-import { Row, Col, Button, Input, Switch, Modal, Select, Checkbox, notification } from 'antd';
+import { Row, Col, Button, Input, Switch, Modal, Select, Checkbox, notification, Form } from 'antd';
 import { isEmpty, map, get, indexOf, last, keys, concat, keyBy, isUndefined, filter, set, cloneDeep } from 'lodash';
 import QuestionItem from './question-item';
+import RadioIcon from '../assets/radio.png';
+import MultipleIcon from '../assets/checkbox.png';
+import DropdownIcon from '../assets/select.png';
+import CompletionIcon from '../assets/vacancy.png';
+import StarIcon from '../assets/stars.png';
+import DescptionIcon from '../assets/description.png';
+import { CustomIcon } from '../../icon';
 import './step2.less';
 
 export const chooseArray = [
   {
     title: '单选题',
     value: 'radio',
+    iconImg: RadioIcon,
   },
   {
     title: '多选题',
     value: 'multiple',
+    iconImg: MultipleIcon,
   },
   {
     title: '下拉题',
     value: 'dropdown',
+    iconImg: DropdownIcon,
   },
   {
     title: '填空题',
     value: 'completion',
+    iconImg: CompletionIcon,
   },
 ];
 
@@ -27,6 +38,7 @@ export const starArray = [
   {
     title: '打分题',
     value: 'star',
+    iconImg: StarIcon,
   },
 ];
 
@@ -34,6 +46,7 @@ export const descArray = [
   {
     title: '段落说明',
     value: 'descption',
+    iconImg: DescptionIcon,
   },
 ];
 
@@ -66,6 +79,8 @@ export default class Step2 extends React.Component {
       questionsTitle: get(data, 'questionsTitle') || '',
       questionsDescription: get(data, 'questionsDescription') || '',
       questions: get(data, 'questions') || [],
+      title: get(data, 'title') || '',
+      description: get(data, 'description') || '',
       dragItemType: undefined,
       newQuestionIndex: undefined,
       activeQuestion: undefined,
@@ -283,16 +298,14 @@ export default class Step2 extends React.Component {
         <div className="question-step-two__panel-question-card">
           {map(btns, (btn, index) => {
             return (
-              <div key={index}>
-                <span className="question-step-two__panel-question-card__title">{get(btn, 'title')}</span>
-                <div className="question-step-two__panel-question-card__btns">
+              <div key={index} className="question-step-two__panel-question-card-item">
+                <span className="question-step-two__panel-question-card-item__title">{get(btn, 'title')}</span>
+                <div className="question-step-two__panel-question-card-item__btns">
                   {map(get(btn, 'value'), item => {
                     return (
-                      <Button
+                      <div
                         key={get(item, 'value')}
-                        size="small"
-                        type="ghost"
-                        className="question-step-two__panel-question-card__btns-btn"
+                        className="question-step-two__panel-question-card-item__btns-btn"
                         draggable
                         onDragStart={() => {
                           this.setState({ dragItemType: get(item, 'value') });
@@ -300,8 +313,9 @@ export default class Step2 extends React.Component {
                         onDragEnd={this.handleDragEnd}
                         onClick={this.handleBtnClick(get(item, 'value'))}
                       >
-                        {get(item, 'title')}
-                      </Button>
+                        <img src={get(item, 'iconImg')} alt="" />
+                        <div>{get(item, 'title')}</div>
+                      </div>
                     );
                   })}
                 </div>
@@ -439,7 +453,7 @@ export default class Step2 extends React.Component {
   };
 
   render() {
-    const { relationVisible, questions, questionsTitle, questionsDescription } = this.state;
+    const { relationVisible, questions, questionsTitle, questionsDescription, description, title } = this.state;
 
     return (
       <>
@@ -477,15 +491,38 @@ export default class Step2 extends React.Component {
               )}
             </div>
             <div className="question-step-two__panel-preview-bottom">
-              <div className="question-step-two__panel-preview-bottom__title">
+              <Form.Item label="问卷标题" wrapperCol={{ span: 17 }}>
+                <Input
+                  size="small"
+                  value={title}
+                  onChange={e => {
+                    this.setState({
+                      title: get(e, 'target.value'),
+                    });
+                  }}
+                />
+              </Form.Item>
+              <Form.Item label="问卷描述" wrapperCol={{ span: 17 }}>
+                <Input
+                  size="small"
+                  value={description}
+                  onChange={e => {
+                    this.setState({
+                      description: get(e, 'target.value'),
+                    });
+                  }}
+                />
+              </Form.Item>
+              {/* <div className="question-step-two__panel-preview-bottom__title">
                 <span>完成时显示</span>
               </div>
               <div>
                 <Input.TextArea rows={5} defaultValue="感谢您的配合!" />
-              </div>
+              </div> */}
               <div className="question-step-two__panel-preview-bottom__btns">
                 <Button
                   className="question-step-two__panel-preview-bottom__btns-btn"
+                  icon={<CustomIcon type="icon-reset" />}
                   onClick={() => {
                     const { onChangeStep } = this.props;
                     onChangeStep && onChangeStep(0);
@@ -493,57 +530,26 @@ export default class Step2 extends React.Component {
                 >
                   上一步
                 </Button>
-
                 <Button
+                  type="primary"
                   className="question-step-two__panel-preview-bottom__btns-btn"
+                  icon={<CustomIcon type="icon-next" />}
                   onClick={() => {
-                    const { onPreview } = this.props;
-                    const { questions, questionsTitle, questionsDescription } = this.state;
+                    const { onPreview, data } = this.props;
+                    const { questions, questionsTitle, questionsDescription, title, description } = this.state;
                     onPreview &&
                       onPreview({
+                        ...data,
                         questions,
                         questionsTitle,
                         questionsDescription,
+                        title,
+                        description,
                       });
                   }}
                 >
-                  预览
+                  下一步
                 </Button>
-                <Button
-                  type="primary"
-                  className="question-step-two__panel-preview-bottom__btns-btn"
-                  onClick={() => {
-                    const { onSaveTemplate, type, onCreateTemplate } = this.props;
-                    type === 'create'
-                      ? onCreateTemplate({
-                          questions,
-                          questionsTitle,
-                          questionsDescription,
-                        })
-                      : onSaveTemplate({
-                          questions,
-                          questionsTitle,
-                          questionsDescription,
-                        });
-                  }}
-                >
-                  保存问卷
-                </Button>
-                {/* <Button
-                  onClick={() => {
-                    const { onDeploy } = this.props;
-                    onDeploy &&
-                      onDeploy({
-                        questions,
-                        questionsTitle,
-                        questionsDescription,
-                      });
-                  }}
-                  type="primary"
-                  className="question-step-two__panel-preview-bottom__btns-btn"
-                >
-                  发布
-                </Button> */}
               </div>
             </div>
           </Col>

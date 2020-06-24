@@ -1,25 +1,40 @@
 @import '../index.less';
 
 .question-step-two__panel {
-  padding: 16px;
   &-question {
-    width: 15%;
     height: auto;
     position: fixed;
+    width: 15%;
     &-card {
-      margin: 16px 0;
-      &__title {
-        display: block;
-        font-size: 20px;
-        font-weight: 400;
-        margin: 8px 0;
-      }
-      &__btns {
+      font-size: 16px;
+      &-item {
         display: flex;
-        flex-flow: row wrap;
-        justify-content: space-between;
-        &-btn {
-          margin: 4px 0;
+        border-bottom: 1px solid #edeef5;
+        margin: 16px 0;
+        &__title {
+          display: block;
+          font-weight: 400;
+          flex: 1;
+        }
+        &__btns {
+          display: flex;
+          flex: 2;
+          flex-flow: column wrap;
+          justify-content: space-between;
+          margin-left: 8px;
+          &-btn {
+            margin: 8px 0;
+            display: flex;
+            cursor: pointer;
+            img {
+              width: 24px;
+              height: 24px;
+              margin-right: 8px;
+            }
+            &:first-child {
+              margin-top: 0;
+            }
+          }
         }
       }
     }
@@ -30,6 +45,9 @@
       background-color: @questionnaire-bg-color;
       padding: 24px 8px;
       border-bottom: 1px solid @questionnaire-border-color;
+      &__desc {
+        margin-top: 8px;
+      }
     }
     &-middle {
       &__start {
@@ -107,6 +125,7 @@
       }
       &__btns {
         display: flex;
+        justify-content: center;
         flex-flow: row nowrap;
         margin-top: 16px;
         &-btn {

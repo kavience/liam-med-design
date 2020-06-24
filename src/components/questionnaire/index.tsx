@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { get } from 'lodash';
 import Step1 from './create/step1';
 import Step2 from './create/step2';
 import Step3 from './create/step3';
@@ -8,13 +9,11 @@ import './index.less';
 interface IQuestionnaire {
   templateList?: any[];
   onDeleteTemplate?: any;
-  onSaveTemplate?: any;
-  onCreateTemplate?: any;
-  // onDeploy?: any;
+  onSubmitTemplate?: any;
 }
 
 export default (props: IQuestionnaire) => {
-  const { templateList, onDeploy, onSaveTemplate, onCreateTemplate, onDeleteTemplate } = props;
+  const { templateList, onSubmitTemplate, onDeleteTemplate } = props;
   const [current, setCurrent] = useState(0);
   const [data, setData] = useState({});
   const [type, setType] = useState('create');
@@ -28,10 +27,14 @@ export default (props: IQuestionnaire) => {
     handleChangeStep(2);
   };
 
-  const handleInitQuestions = (type: 'create' | 'update', questionnaire: any) => {
-    setData(questionnaire);
+  const handleInitQuestions = (type: 'create' | 'update', data: any) => {
+    setData(data);
     setType(type);
     handleChangeStep(1);
+  };
+
+  const handleSubmit = () => {
+    onSubmitTemplate && onSubmitTemplate(type, data);
   };
 
   return (
@@ -43,26 +46,10 @@ export default (props: IQuestionnaire) => {
       </Steps>
       <div className="questionnaire-steps-content">
         {current === 0 && (
-          <Step1
-            initQuestions={handleInitQuestions}
-            templateList={templateList}
-            onDeleteTemplate={onDeleteTemplate}
-            onCreate={onDeleteTemplate}
-            onUpdate={onDeleteTemplate}
-          />
+          <Step1 initQuestions={handleInitQuestions} templateList={templateList} onDeleteTemplate={onDeleteTemplate} />
         )}
-        {current === 1 && (
-          <Step2
-            onChangeStep={handleChangeStep}
-            onPreview={handlePreview}
-            onSaveTemplate={onSaveTemplate}
-            onCreateTemplate={onCreateTemplate}
-            // onDeploy={onDeploy}
-            type={type}
-            data={data}
-          />
-        )}
-        {current === 2 && <Step3 onChangeStep={handleChangeStep} onDeploy={onDeploy} data={data} />}
+        {current === 1 && <Step2 onChangeStep={handleChangeStep} onPreview={handlePreview} type={type} data={data} />}
+        {current === 2 && <Step3 onChangeStep={handleChangeStep} data={data} onSubmit={handleSubmit} />}
       </div>
     </div>
   );
