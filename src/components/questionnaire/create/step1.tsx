@@ -29,7 +29,7 @@ export class Step1 extends Component {
       <div className="follow-up-step1">
         <List
           rowKey="id"
-          grid={{ gutter: 24, column: 5 }}
+          grid={{ gutter: 24, column: 4 }}
           dataSource={['', ...templateList]}
           renderItem={item =>
             item ? (
